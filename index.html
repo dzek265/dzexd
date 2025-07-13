@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="" ="width=device-width, initial-scale=1.0"/>
+  <title>Portofolio Dzexhanaoka</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+#cursor {
+  animation: blink 0.7s infinite;
+}
+
+.sosmed a {
+  display: inline-flex;
+  align-items: center;
+  margin: 8px;
+  text-decoration: none;
+  color: white;
+  background: #222;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: 0.3s;
+  box-shadow: 0 0 5px #f00;
+}
+
+.sosmed a:hover {
+  background: #444;
+  box-shadow: 0 0 10px #f00;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(145deg, #111, #1c1c1c);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .profile-pic {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #f00;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+
+#snow-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+    h1 {
+      margin: 10px 0 5px;
+      font-size: 2em;
+    }
+
+    p {
+      opacity: 0.8;
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #f00;
+      border-bottom: 2px solid #f00;
+      display: inline-block;
+      padding-bottom: 5px;
+      margin-bottom: 20px;
+    }
+
+    .project, .sosmed, .skill {
+      background: #1a1a1a;
+      padding: 15px;
+      border-left: 4px solid #f00;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    .sosmed a {
+      display: inline-block;
+      margin-right: 12px;
+      text-decoration: none;
+      color: white;
+      background: #f00;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .sosmed a:hover {
+      background: #c00;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 10px;
+      color: #888;
+      font-size: 0.9em;
+      background: #111;
+      animation: fadeIn 2s;
+    }
+
+    .skill-bar {
+      background: #333;
+      border-radius: 30px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .skill-bar-fill {
+      height: 20px;
+      background: #f00;
+      width: 0;
+      border-radius: 30px;
+      transition: width 1s ease-in-out;
+    }
+
+    .skill-title {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes slideUp {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 600px) {
+      .profile-pic {
+        width: 100px;
+        height: 100px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="chatAI" style="
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyczJ6NG5rOG5ka2RpMXZsYzFuYnNseHJwcGgyeHZkMThhcGtiZnZudSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pNx09ajeVCJ3O/giphy.gif') center center / cover no-repeat;
+  z-index: 99999;
+  color: white;
+  font-family: sans-serif;
+  overflow: hidden;
+">
+  <div style="
+    background: #f00;
+    color: white;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  ">
+    🤖Dzex ai
+    <button onclick="tutupBantuan()" style="
+      background: none;
+      color: white;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+    ">❌</button>
+  </div>
+
+  <div id="chat-log" style="
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(1px);
+  ">
+    <div><b>AI:</b> Halo! Ada yang bisa aku bantu?</div>
+  </div>
+
+  <div style="
+    padding: 16px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #111;
+    display: flex;
+    gap: 10px;
+  ">
+    <input type="text" id="chat-input" placeholder="Ketik pesan kamu..." style="
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background: #222;
+      color: white;
+    ">
+    <button onclick="kirimChat()" style="
+      background: #f00;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    ">📨</button>
+  </div>
+</div>
+
+
+
+<!-- Welcome / Loading Screen -->
+<div id="welcome-screen" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #111;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Courier New', monospace;
+  font-size: 1.4em;
+  z-index: 9999;
+">
+<span id="typed-text" style="
+  background: linear-gradient(270deg, red, orange, yellow, green, cyan, blue, violet, red);
+  background-size: 1000% 1000%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 10s linear infinite, glow 1.5s ease-in-out infinite;
+"></span><span id="cursor">|</span>
+</div>
+
+  <header>
+    
+    <canvas id="snow-canvas"></canvas>
+    
+    <img src="dzexganteng.jpg" alt="Foto Profil" class="profile-pic">
+    <h1>Dzex Hanaoka</h1>
+    <p>Web Developer | UI Designer</p>
+    <div id="datetime" style="
+  text-align: center;
+  font-size: 16px;
+  margin-top: 10px;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 0 5px #f00;
+"></div>
+  </header>
+
+  <section id="about">
+    
+    <h2>Tentang Saya</h2>
+    <div class="project">
+      <p>Hallo Saya Dzex,Usia saya 13 tahun,Saya masi pemula di dunia ini,Saya baru membuat beberapa projek kecil,seperti web,script bot wa&telegram,tools terminal,dll</p>
+    </div>
+  </section>
+
+<!-- 🔘 Tombol Buka Chat AI (Merah) -->
+<button onclick="bukaBantuan()" style="
+  position: fixed;
+  bottom: 500px;
+  left: 20px;
+  background: #d00;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 0 15px #f00;
+  cursor: pointer;
+  z-index: 9999;
+">
+  🤖Dzex Ai
+</button>
+
+<audio id="bg-music" src="https://files.catbox.moe/2nco0t.m4a" preload="auto" loop></audio>
+
+<button id="toggle-music" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #f00;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #f00;
+  z-index: 999;
+">
+  🔊 Putar Musik</button>
+
+<script>
+  const music = document.getElementById('bg-music');
+  const btn = document.getElementById('toggle-music');
+
+  btn.addEventListener('click', () => {
+    if (music.paused) {
+      music.play().then(() => {
+        btn.textContent = '🔊 Musik: ON';
+      }).catch(err => {
+        alert("Gagal memutar audio: " + err.message);
+      });
+    } else {
+      music.pause();
+      btn.textContent = '🔇 Musik: OFF';
+    }
+  });
+</script>
+
+  <section id="skills">
+    <h2>My Skills</h2>
+    <div class="skill">
+      <div class="skill-title">HTML</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width: 80%;"></div></div>
+      <div class="skill-title">CSS</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width: 80%;"></div></div>
+      <div class="skill-title">JavaScript</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width: 45%;"></div></div>
+      <div class="skill-title">Python</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width: 50%;"></div></div>
+      <div class="skill-title">Ruby</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width: 0%;"></div></div>
+      <div class="skill-title">PHP</div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width: 20%;"></div></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Proyek</h2>
+    <div class="project">
+      <h3>Website Portofolio</h3>
+      <p>Proyek ini menampilkan profil pribadi, proyek, dan sosial media saya.</p>
+    </div>
+    <div class="project">
+      <h3>Aplikasi To-Do Web</h3>
+      <p>Webapp untuk mengatur tugas harian dan pengingat secara responsif.</p>
+    </div>
+    <div class="project">
+      <h3>Website Spam Telegram</h3>
+      <p>Proyek ini berguna untuk spam text,dan lainnya,dan bisa juga untuk spam bug</p>
+    </div>
+        <div class="project">
+      <h3>Bot Wa</h3>
+      <p>Saya sudah banyak membuat bot wa seperti,Dzexhanaoka,The Simple bug,Dll</p>
+    </div>
+            <div class="project">
+      <h3>Bot Telegram</h3>
+      <p>Saya baru membuat 2 bot tele yaitu,Dread Invictus,Neo-Ai</p>
+    </div>
+  </section>
+
+  <section id="contact">
+  <h2>Kontak & Sosial Media</h2>
+  <div class="sosmed">
+    <a href="https://t.me/Dzex" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" class="icon">
+    </a>
+    <a href="https://wa.me/6285720154585" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" class="icon">
+    </a>
+    <a href="" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png" class="icon">
+    </a>
+    <a href="https://www.tiktok.com/@dzexd2?_t=ZS-8xyuwUsJQ4W&_r=1" target="_blank">
+      <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" class="icon">
+    </a>
+  </div>
+</section>
+
+  <footer>
+    © 2025 Dzex Hanaoka. All rights reserved.
+  </footer>
+
+  <script>
+    // Animasi saat halaman selesai dimuat (progress bar isi penuh)
+    window.addEventListener("load", () => {
+      document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+          bar.style.width = width;
+        }, 100);
+      });
+    });
+  </script>
+  <script>
+  const canvas = document.getElementById('snow-canvas');
+  const ctx = canvas.getContext('2d');
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  const numFlakes = 100;
+  const flakes = [];
+
+  for (let i = 0; i < numFlakes; i++) {
+    flakes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 4 + 1,
+      d: Math.random() * numFlakes
+    });
+  }
+
+  function drawFlakes() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    for (let i = 0; i < numFlakes; i++) {
+      let f = flakes[i];
+      ctx.moveTo(f.x, f.y);
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+    }
+    ctx.fill();
+    moveFlakes();
+  }
+
+  let angle = 0;
+
+  function moveFlakes() {
+    angle += 0.01;
+    for (let i = 0; i < numFlakes; i++) {
+      let f = flakes[i];
+      f.y += Math.cos(angle + f.d) + 1 + f.r / 2;
+      f.x += Math.sin(angle) * 2;
+
+      if (f.y > height) {
+        flakes[i] = { x: Math.random() * width, y: 0, r: f.r, d: f.d };
+      }
+    }
+  }
+
+  setInterval(drawFlakes, 25);
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+</script>
+<script>
+  const text = "Selamat Datang Di Website Dzex — Portofolio Dzex";
+  const typedText = document.getElementById("typed-text");
+  const welcomeScreen = document.getElementById("welcome-screen");
+  let i = 0;
+
+  function typeWriter() {
+    if (i < text.length) {
+      typedText.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 50); // kecepatan ketikan
+    } else {
+      // Setelah selesai, hilangkan layar welcome
+      setTimeout(() => {
+        welcomeScreen.style.opacity = 0;
+        welcomeScreen.style.transition = "opacity 1s ease";
+        setTimeout(() => {
+          welcomeScreen.style.display = "none";
+        }, 1000);
+      }, 1000); // tunggu 1 detik sebelum fade out
+    }
+  }
+
+  window.addEventListener("load", typeWriter);
+</script>
+<script>
+  function bukaBantuan() {
+    document.getElementById("chatAI").style.display = "block";
+  }
+
+  function tutupBantuan() {
+    document.getElementById("chatAI").style.display = "none";
+  }
+
+  function kirimChat() {
+    const input = document.getElementById("chat-input");
+    const log = document.getElementById("chat-log");
+    const pesan = input.value.trim();
+    if (!pesan) return;
+
+    // Tambahkan pesan user
+    log.innerHTML += `<div><b>Kamu:</b> ${pesan}</div>`;
+
+    // Efek sedang mengetik...
+    const mengetikID = "mengetik-indikator-" + Date.now();
+    log.innerHTML += `<div id="${mengetikID}"><b>AI:</b> <i>sedang mengetik...</i></div>`;
+    log.scrollTop = log.scrollHeight;
+
+    input.value = "";
+
+    // Tunggu beberapa detik lalu balas dengan efek ketik
+    setTimeout(() => {
+      const balasan = getBalasanAI(pesan);
+      ketikBalasanPerHuruf(mengetikID, balasan);
+    }, 1200);
+  }
+
+  function ketikBalasanPerHuruf(id, text) {
+    const el = document.getElementById(id);
+    let i = 0;
+    el.innerHTML = `<b>AI:</b> <span id="typing-text"></span>`;
+    const typingEl = el.querySelector("#typing-text");
+
+    const interval = setInterval(() => {
+      typingEl.textContent += text.charAt(i);
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+      }
+    }, 25); // kecepatan ketik (ms per huruf)
+  }
+
+  function getBalasanAI(msg) {
+    msg = msg.toLowerCase();
+
+    if (msg.includes("halo") || msg.includes("hai") || msg.includes("assalamualaikum"))
+      return "Hai juga! 👋 Selamat datang di website Dzex. Ada yang bisa dibantu?";
+    if (msg.includes("siapa kamu") || msg.includes("apa ini"))
+      return "Aku adalah AI dummy, asisten virtual dari website Dzex. Aku di sini untuk bantu kamu mengenal fitur web ini.";
+    if (msg.includes("fitur") || msg.includes("ada apa") || msg.includes("web ini"))
+      return "Website ini punya fitur: 🎮 Mini Game, 🎵 Musik, 📆 Tanggal & Waktu, 🤖 Chat AI, 📱 Swipe Screen, dan lainnya.";
+    if (msg.includes("musik") || msg.includes("lagu") || msg.includes("putar musik") || msg.includes("sound"))
+      return "Untuk memutar musik, klik tombol musik lalu masukkan link lagumu. Nikmati ya! 🎶";
+    if (msg.includes("game") || msg.includes("mini game") || msg.includes("easter egg"))
+      return "Kamu bisa klik elemen tersembunyi seperti tanggal atau logo untuk memunculkan portal mini game rahasia 🎮.";
+    if (msg.includes("swipe") || msg.includes("geser") || msg.includes("buka layar"))
+      return "Coba swipe layar ke atas seperti membuka HP — ada tampilan unik di baliknya 📱✨";
+    if (msg.includes("kontak") || msg.includes("hubungi") || msg.includes("wa") || msg.includes("telegram"))
+      return "Kamu bisa menghubungi Dzex lewat tombol WhatsApp dan Telegram di bagian bawah ya! 📞";
+    if (msg.includes("sosial") || msg.includes("tiktok") || msg.includes("github") || msg.includes("link"))
+      return "Semua link sosial media Dzex tersedia di footer, tinggal klik logonya ya! 🌐";
+    if (msg.includes("jam") || msg.includes("waktu") || msg.includes("tanggal") || msg.includes("hari ini"))
+      return "Tanggal, hari, dan waktu saat ini tampil di bagian atas layar secara real-time ⏰.";
+    if (msg.includes("skill") || msg.includes("keahlian") || msg.includes("kemampuan") || msg.includes("bahasa pemrograman"))
+      return "Dzex memiliki skill di bidang: HTML, CSS, JavaScript, Python, Ruby, PHP, dan UI/UX Design 💻🎨";
+    if (msg.includes("portofolio") || msg.includes("project") || msg.includes("karya") || msg.includes("website") || msg.includes("aplikasi"))
+      return "Silakan cek bagian portofolio untuk lihat semua karya dan project keren buatan Dzex 💼✨";
+    if (msg.includes("cv") || msg.includes("download cv") || msg.includes("resume"))
+      return "Kamu bisa download CV dari tombol yang tersedia di bagian portofolio 📄✅";
+    if (msg.includes("gelap") || msg.includes("dark mode") || msg.includes("mode malam"))
+      return "Saat ini mode gelap belum tersedia, tapi aku bisa bantu menambahkannya kalau kamu mau 😉";
+    if (msg.includes("bantu") || msg.includes("tolong") || msg.includes("gimana") || msg.includes("cara"))
+      return "Tentu! Kamu bisa tanya apa saja tentang fitur atau cara menggunakan website ini 👌";
+    if (msg.includes("makasih") || msg.includes("terima kasih") || msg.includes("thanks"))
+      return "Sama-sama! 😊 Senang bisa membantu kamu.";
+    if (msg.includes("kembali") || msg.includes("tutup") || msg.includes("close"))
+      return "Klik tombol ❌ di pojok atas panel ini untuk kembali ke tampilan utama ya 🔙.";
+    if (msg.includes("Dzex") || msg.includes("pemilik") || msg.includes("yang buat"))
+      return "Website ini dibuat oleh Dzex— seorang developer kreatif yang penuh semangat 🚀";
+
+    const randomBalasan = [
+      "Hmm... aku belum mengerti maksudmu 😅",
+      "Bisa diketik ulang dengan lebih jelas?",
+      "Aku masih belajar, tapi semangat bantu kok 💪",
+      "Coba ketik 'fitur', 'musik', 'kontak', atau 'game'.",
+    ];
+    return randomBalasan[Math.floor(Math.random() * randomBalasan.length)];
+  }
+</script>
+
+</body>
+  </html>
